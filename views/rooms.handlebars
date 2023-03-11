@@ -1,0 +1,23 @@
+<div class="col-md-9">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="/add_room" class="btn btn-primary">Add Room</a>
+            </div>
+        </div>
+        <div class="row mt-5">
+            {{#each rooms}}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.room_no}}</h5>
+                        <p class="card-text">{{this.room_type}}</p>
+                        <a href="/edit_room/{{this._id}}" class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                    </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
