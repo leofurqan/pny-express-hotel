@@ -3,48 +3,43 @@ const router = express.Router()
 const parser = require("body-parser")
 const roomModal = require("../modals/room_modal")
 const methodOverride = require("method-override")
+const roomController = require("../controllers/roomController")
+const guestController = require("../controllers/guestController")
 
-router.use(parser.urlencoded({ extended: false }))
-router.use(parser.json())
+const urlencoded = parser.urlencoded({ extended: false })
 router.use(methodOverride('_method'))
 
 router.get("/", (req, res) => {
-    res.render("home")
-})
-
-router.get("/rooms", (req, res) => {
-    roomModal.find().lean().then((r)=>{
-        res.render("rooms", {rooms: r})
+    roomModal.find().count().then((r) => {
+    res.render("home", {room_count: r})
     }).catch((err) => {
-        console.log("room find: " + err)
-    })
+        console.log("room count: " + err)
+    }) 
 })
 
-router.get("/add_room", (req, res) => {
-    res.render("add_room")
-})
+router.get("/rooms", roomController.getRooms)
+router.get("/add_room", roomController.addRoom)
+router.post('/insert_room', urlencoded, roomController.insertRoom)
+router.get('/edit_room/:id', roomController.editRoom)
 
-router.post('/insert_room', (req, res) => {
-    const room = new roomModal(req.body)
-
-    room.save().then((r) => {
-        console.log("room insert: " + r)
+router.put('/update_room/:id', (req, res) => {
+    roomModal.findByIdAndUpdate(req.params.id, req.body).then((r) => {
         res.redirect("/rooms")
     }).catch((err) => {
-        console.log("room insert: " + err)
+        console.log("update failed: " + err)
     })
 })
 
-router.get('/edit_room/:id', (req, res) => {
-    roomModal.findById(req.params.id).lean().then((r) => {
-        res.render("edit_room", {room: r,  helpers: {
-            eq_sb() { return r.room_type == 'single_bed'; },
-            eq_db() { return r.room_type == 'double_bed'; }
-        }
-    })
+router.delete("/delete_room/:id", (req, res) => {
+    roomModal.findOneAndRemove(req.params.id).then((r) => {
+        res.redirect("/rooms")
     }).catch((err) => {
-        console.log("find room by id: " + err)
+        console.log("delete failed: " + err)
     })
 })
+
+router.get("/guests", guestController.getGuests)
+router.get("/add_guest", guestController.addGuest)
+router.post("/insert_guest", urlencoded, guestController.insertGuest)
 
 module.exports = router

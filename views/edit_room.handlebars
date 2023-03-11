@@ -1,8 +1,7 @@
 <div class="col-md-9">
     <div class="container-fluid">
         <div class="row">
-            <form action="/update_room?_method=PUT" method="post">
-                <input type="hidden" name="room_id" value="{{room._id}}">
+            <form action="/update_room/{{room._id}}?_method=PUT" method="post">
                 <div class="form-group row">
                     <div class="col-md-4">
                         <input type="number" class="form-control" placeholder="Enter room no." name="room_no" value="{{room.room_no}}" required>
@@ -10,8 +9,8 @@
                     <div class="col-md-4">
                         <select name="room_type" class="form-select" required>
                             <option value="">Select Room Type</option>
-                            <option value="single_bed" selected="{{eq_sb}}">Single Bed</option>
-                            <option value="two_single_bed" selected="{{eq_db}}">Two Single Bed</option>
+                            <option value="single_bed">Single Bed</option>
+                            <option value="two_single_bed">Two Single Bed</option>
                             <option value="double_bed">Double Bed</option>
                             <option value="queen_bed">Queen Bed</option>
                             <option value="king_bed">King Bed</option>
@@ -19,7 +18,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <input type="number" class="form-control" placeholder="Enter room price" name="room_price" required>
+                        <input type="number" class="form-control" placeholder="Enter room price" name="room_price" value="{{room.room_price}}" required>
                     </div>
                 </div>
 
@@ -37,7 +36,7 @@
                 <div class="form-group row">
                     <div class="col-md-4"></div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary">Add Room</button>
+                        <button type="submit" class="btn btn-primary">Update Room</button>
                     </div>
                     <div class="col-md-1">
                         <button type="reset" class="btn btn-secondary">Cancel</button>
