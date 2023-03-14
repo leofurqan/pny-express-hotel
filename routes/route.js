@@ -5,9 +5,15 @@ const roomModal = require("../modals/room_modal")
 const methodOverride = require("method-override")
 const roomController = require("../controllers/roomController")
 const guestController = require("../controllers/guestController")
+const userController = require("../controllers/userController")
 
 const urlencoded = parser.urlencoded({ extended: false })
 router.use(methodOverride('_method'))
+
+router.get("/login", userController.login)
+router.get("/signup", userController.signup)
+router.post("/insertUser", urlencoded, userController.insertUser)
+router.post("/loginUser", urlencoded, userController.loginUser)
 
 router.get("/", (req, res) => {
     roomModal.find().count().then((r) => {

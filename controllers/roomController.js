@@ -2,7 +2,8 @@ const roomModal = require("../modals/room_modal")
 
 exports.getRooms = (req, res) => {
     roomModal.find().sort({_id: 'desc'}).lean().then((r)=>{
-        res.render("rooms", {rooms: r})
+        // res.render("rooms", {rooms: r})
+        res.json(r)
     }).catch((err) => {
         console.log("room find: " + err)
     })
