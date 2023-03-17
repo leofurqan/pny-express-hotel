@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
+require('dotenv').config()
 
-mongoose.connect("mongodb://127.0.0.1:27017/hotel").then(() => {
+mongoose.connect(process.env.mongodb).then(() => {
     console.log("db connected")
 }).catch((err) => {
     console.log("db error: " + err)

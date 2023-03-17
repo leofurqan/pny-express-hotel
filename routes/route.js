@@ -6,24 +6,29 @@ const methodOverride = require("method-override")
 const roomController = require("../controllers/roomController")
 const guestController = require("../controllers/guestController")
 const userController = require("../controllers/userController")
+const auth = require("../middleware/auth")
+const cookieParser = require('cookie-parser')
 
 const urlencoded = parser.urlencoded({ extended: false })
 router.use(methodOverride('_method'))
+
+router.use(cookieParser())
 
 router.get("/login", userController.login)
 router.get("/signup", userController.signup)
 router.post("/insertUser", urlencoded, userController.insertUser)
 router.post("/loginUser", urlencoded, userController.loginUser)
+router.get("/logout", auth, userController.logout)
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
     roomModal.find().count().then((r) => {
-    res.render("home", {room_count: r})
+    res.render("home", {room_count: r, user_name: req.user_name})
     }).catch((err) => {
         console.log("room count: " + err)
     }) 
 })
 
-router.get("/rooms", roomController.getRooms)
+router.get("/rooms", auth, roomController.getRooms)
 router.get("/add_room", roomController.addRoom)
 router.post('/insert_room', urlencoded, roomController.insertRoom)
 router.get('/edit_room/:id', roomController.editRoom)
@@ -44,7 +49,7 @@ router.delete("/delete_room/:id", (req, res) => {
     })
 })
 
-router.get("/guests", guestController.getGuests)
+router.get("/guests", auth, guestController.getGuests)
 router.get("/add_guest", guestController.addGuest)
 router.post("/insert_guest", urlencoded, guestController.insertGuest)
 

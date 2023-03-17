@@ -1,5 +1,6 @@
 const mongoose = require("../db")
 const bcrypt = require("bcrypt")
+require('dotenv').config()
 
 const userSchema = new mongoose.Schema({
     'user_name': String,
