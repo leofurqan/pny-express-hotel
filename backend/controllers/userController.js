@@ -20,20 +20,20 @@ exports.insertUser = (req, res) => {
 }
 
 exports.loginUser = (req, res) => {
+    console.log(req.body)
     userModal.findOne({user_email: req.body.user_email}).then((user) => {
         if(user) {
             bcrypt.compare(req.body.user_password, user.user_password, function(err, result) {
                 if(result) {
-                    console.log("login successful")
                     const token = jwt.sign({user_id: user._id, user_name: user.user_name}, process.env.secret, {expiresIn: 3600})
-                    res.cookie("access_token", token)
-                    res.redirect('/')
+
+                    res.json({status: true, message: 'login successful', token: token})
                 } else {
-                    console.log("password incorrect")
+                    res.json({status: false, message: 'incorrect password'})
                 }
             });
         } else {
-            console.log("Credentials invalid...")
+            res.json({status: false, message: 'Invalid Credentials'})
         }
     }).catch((err) => {
         console.log("user find: " + err)

@@ -8,8 +8,12 @@ const guestController = require("../controllers/guestController")
 const userController = require("../controllers/userController")
 const auth = require("../middleware/auth")
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
+
+router.use(cors())
 
 const urlencoded = parser.urlencoded({ extended: false })
+const json = parser.json()
 router.use(methodOverride('_method'))
 
 router.use(cookieParser())
@@ -17,7 +21,7 @@ router.use(cookieParser())
 router.get("/login", userController.login)
 router.get("/signup", userController.signup)
 router.post("/insertUser", urlencoded, userController.insertUser)
-router.post("/loginUser", urlencoded, userController.loginUser)
+router.post("/loginUser", json, userController.loginUser)
 router.get("/logout", auth, userController.logout)
 
 router.get("/", auth, (req, res) => {
