@@ -1,5 +1,6 @@
 import {React, useState} from 'react'
 import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -9,13 +10,15 @@ export default function Login() {
         "borderRadius": "1rem"
     }
 
+    const toDashboard = useNavigate()
+
     function submitLogin() {
         axios.post('http://localhost:4000/loginUser', {
             user_email: email,
             user_password: password
         }).then((r) => {
             if(r.data.status) {
-                
+                toDashboard('/')
             } else {
                 console.log(r.data.message)
             }
@@ -50,7 +53,7 @@ export default function Login() {
                                     </div>
 
                                 <div>
-                                    <p className="mb-0">Don't have an account? <a href="/signup" className="text-white-50 fw-bold">Sign Up</a>
+                                    <p className="mb-0">Don't have an account? <Link to={"/signup"} className="text-white-50 fw-bold">Sign Up</Link>
                                     </p>
                                 </div>
 

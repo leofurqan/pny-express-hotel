@@ -20,7 +20,7 @@ router.use(cookieParser())
 
 router.get("/login", userController.login)
 router.get("/signup", userController.signup)
-router.post("/insertUser", urlencoded, userController.insertUser)
+router.post("/insertUser", json, userController.insertUser)
 router.post("/loginUser", json, userController.loginUser)
 router.get("/logout", auth, userController.logout)
 

@@ -13,9 +13,9 @@ exports.signup = (req, res) => {
 exports.insertUser = (req, res) => {
     const user = new userModal(req.body)
     user.save().then((r) => {
-        res.redirect('/login')
+        res.json({status: true, message: 'User Registered Successfully'})
     }).catch((err) => {
-        console.log("user registration: " + err)
+        res.json({status: false, message: err})
     })
 }
 
